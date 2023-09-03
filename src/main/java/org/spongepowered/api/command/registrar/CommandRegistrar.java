@@ -176,6 +176,17 @@ public interface CommandRegistrar<T> {
     Optional<Component> help(CommandCause cause, CommandMapping mapping);
 
     /**
+     * Returns usage text for the invoked command, if one is available.
+     *
+     * @param cause The {@link CommandCause} that caused the command to be
+     *              executed
+     * @param mapping The {@link CommandMapping} that is associated with the
+     *                command
+     * @return The usage, if any
+     */
+    Optional<Component> usage(CommandCause cause, CommandMapping mapping);
+
+    /**
      * Gets whether the given {@link CommandCause} can execute the command
      * associated with the given {@link CommandMapping}.
      *
