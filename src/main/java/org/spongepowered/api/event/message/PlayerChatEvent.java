@@ -37,10 +37,8 @@ import java.util.function.Predicate;
 
 /**
  * Fired when sending a chat message.
- * To modify the message use {@link Decorate}.
  */
-@NoFactoryMethod
-public interface PlayerChatEvent extends MessageEvent {
+public interface PlayerChatEvent extends AudienceMessageEvent, Cancellable {
 
     /**
      * Returns the player sending the message.
@@ -50,96 +48,55 @@ public interface PlayerChatEvent extends MessageEvent {
     Optional<ServerPlayer> player();
 
     /**
-     * Fired when a message is sent by a player.
-     * <p>Note that a signed message cannot be modified.</p>
+     * Returns the component to use as the sender.
+     * In Vanilla this defaults to the players display name
+     *
+     * @return The sender component
      */
-    interface Submit extends PlayerChatEvent, Cancellable {
-
-        /**
-         * Returns the predicate for filtering the players receiving the message if set.
-         *
-         * @return the predicate
-         */
-        Optional<Predicate<ServerPlayer>> filter();
-
-        /**
-         * Sets the predicate for filtering the players receiving the message.
-         *
-         * @param filter the predicate
-         */
-        void setFilter(Predicate<ServerPlayer> filter);
-
-        /**
-         * Returns the component to use as the sender.
-         * In Vanilla this defaults to the players display name
-         *
-         * @return The sender component
-         */
-        Component sender();
-
-        /**
-         * Sets the component to use as the sender.
-         *
-         * @param sender The sender component
-         */
-        void setSender(Component sender);
-
-        /**
-         * Returns the component to use as the target.
-         *
-         * @return The target component
-         */
-        Optional<Component> target();
-
-        /**
-         * Sets the component to use as the target.
-         *
-         * @param target The target component
-         */
-        void setTarget(Component target);
-
-        /**
-         * Returns the chat type used.
-         *
-         * @return The chat type
-         */
-        RegistryReference<ChatType> chatType();
-
-        /**
-         * Sets the chat type.
-         * To control the full message format use one of {@link org.spongepowered.api.adventure.ChatTypes#CUSTOM_CHAT}
-         * or {@link org.spongepowered.api.adventure.ChatTypes#CUSTOM_MESSAGE}
-         * <p>To modify the chat message itself it is recommended to use {@link PlayerChatEvent.Decorate}.</p>
-         *
-         * @param chatType the chat type to use.
-         */
-        void setChatType(RegistryReference<ChatType> chatType);
-
-        /**
-         * Returns true when {@link #originalMessage()} is signed and cannot be modified.
-         *
-         * @return True when signed
-         */
-        boolean isSigned();
-
-    }
+    Component sender();
 
     /**
-     * Fired when previewing a message by a player or {@link ServerPlayer#simulateChat(Component, Cause) simulating chat}
+     * Sets the component to use as the sender.
+     *
+     * @param sender The sender component
      */
-    interface Decorate extends PlayerChatEvent {
+    void setSender(Component sender);
 
-        /**
-         * Gets the original chat message.
-         *
-         * <p>In Vanilla, this is equivalent to what a player typed into the
-         * chat box (no name prefix or other elements).</p>
-         *
-         * @return The original chat message
-         */
-        @Override
-        Component originalMessage();
+    /**
+     * Returns the component to use as the target.
+     *
+     * @return The target component
+     */
+    Optional<Component> target();
 
-    }
+    /**
+     * Sets the component to use as the target.
+     *
+     * @param target The target component
+     */
+    void setTarget(Component target);
+
+    /**
+     * Returns the chat type used.
+     *
+     * @return The chat type
+     */
+    RegistryReference<ChatType> chatType();
+
+    /**
+     * Sets the chat type.
+     * To control the full message format use one of {@link org.spongepowered.api.adventure.ChatTypes#CUSTOM_CHAT}
+     * or {@link org.spongepowered.api.adventure.ChatTypes#CUSTOM_MESSAGE}
+     *
+     * @param chatType the chat type to use.
+     */
+    void setChatType(RegistryReference<ChatType> chatType);
+
+    /**
+     * Returns true when {@link #originalMessage()} is signed and cannot be modified.
+     *
+     * @return True when signed
+     */
+    boolean isSigned();
 
 }
